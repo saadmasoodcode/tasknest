@@ -40,13 +40,16 @@ const SignUpForm = () => {
 
   return (
     <div
-      className="w-full min-h-screen p-10
+      className="w-full min-h-screen p-5 md:p-10
     bg-[rgb(246,247,248)] flex justify-center items-center"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-96 flex flex-col gap-8">
-          <div className="w-full flex justify-center">
-            <img className="w-32" src={logo} alt="" />
+      <form
+        className="w-[40%] max-w-96 min-w-[230px]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="w-1/1 flex flex-col gap-8">
+          <div className="w-full  flex justify-center">
+            <img className="w-24 sm:w-32" src={logo} alt="" />
           </div>
           <div className="w-full flex flex-col items-center">
             <h1 className="text-[20px] font-bold">Create your account</h1>
