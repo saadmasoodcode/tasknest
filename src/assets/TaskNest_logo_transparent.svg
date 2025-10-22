@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1600" height="512" viewBox="0 0 1600 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TaskNest logo">
+  <defs>
+    <linearGradient id="grad" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#6EA8FF"/>
+      <stop offset="100%" stop-color="#8A6CFF"/>
+    </linearGradient>
+    <linearGradient id="grad-stroke" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#7FB9FF"/>
+      <stop offset="100%" stop-color="#9A7AFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- transparent background by default -->
+
+  <!-- ICON GROUP (left) -->
+  <g id="icon" transform="translate(80,64)">
+
+    <!-- Outer circle (soft stroke) -->
+    <circle cx="160" cy="160" r="96" fill="none" stroke="url(#grad-stroke)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Inner plate (subtle) -->
+    <circle cx="160" cy="160" r="64" fill="#ffffff" fill-opacity="0.02"/>
+
+    <!-- Checkmark inside circle (filled) -->
+    <path d="M135 160 L155 180 L195 140" fill="none" stroke="url(#grad)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Three nest arcs below the circle to suggest a nest -->
+    <path d="M64 236 C96 206, 224 206, 256 236" fill="none" stroke="url(#grad-stroke)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M84 260 C120 238, 200 238, 236 260" fill="none" stroke="url(#grad-stroke)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M104 282 C140 268, 180 268, 216 282" fill="none" stroke="url(#grad-stroke)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Subtle circle fill (very light) for balance -->
+    <circle cx="160" cy="160" r="56" fill="none" stroke="none"/>
+  </g>
+
+  <!-- TEXT GROUP (right) -->
+  <g id="wordmark" transform="translate(380,200)">
+    <!-- Use rounded friendly type; fallbacks included -->
+    <text x="0" y="0" font-family="Poppins, Inter, 'Nunito Sans', Arial, sans-serif" font-weight="600" font-size="72" fill="#2F4F9B">
+      Task
+    </text>
+    <text x="208" y="0" font-family="Poppins, Inter, 'Nunito Sans', Arial, sans-serif" font-weight="600" font-size="72" fill="#6A6BCF">
+      Nest
+    </text>
+  </g>
+
+</svg>
