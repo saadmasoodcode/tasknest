@@ -1,8 +1,4 @@
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./SideBar";
 import { useIsMobile } from "@/hooks/use-mobile";

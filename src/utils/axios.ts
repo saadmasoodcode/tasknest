@@ -33,5 +33,6 @@ export const setTokens = (accessToken: string, refreshToken: string) => {
 privateAxios.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${accessToken}`;
   config.headers["Content-Type"] = "application/json";
+  console.log(refreshToken);
   return config;
 });
