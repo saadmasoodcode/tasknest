@@ -4,16 +4,16 @@ let accessToken = "";
 let refreshToken = "";
 
 export const publicAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_SUPABASE_URL,
   headers: {
-    apiKey: import.meta.env.VITE_API_KEY,
+    apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
   },
 });
 
 export const privateAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_SUPABASE_URL,
   headers: {
-    apiKey: import.meta.env.VITE_API_KEY,
+    apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
   },
 });
 
