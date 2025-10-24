@@ -3,6 +3,7 @@ import SignInPage from "./SignInPage";
 import SignUpPage from "./SignUpPage";
 import Home from "./Home";
 import MainLayout from "@/components/layout/MainLayout";
+import { Toaster } from "sonner";
 
 const Pages = () => {
   return (
@@ -14,6 +15,7 @@ const Pages = () => {
           <Route path="/home" element={<Home />} />
         </Route>
       </Routes>
+      <Toaster position="bottom-left" closeButton />
     </>
   );
 };

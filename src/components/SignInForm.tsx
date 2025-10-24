@@ -8,6 +8,9 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from "@/yupSchemas/AuthSchemas";
+import { toast } from "sonner";
+import { Spinner } from "./ui/spinner";
+import { useEffect } from "react";
 
 interface ISignInForm {
   email: string;
@@ -15,7 +18,9 @@ interface ISignInForm {
 }
 
 const SignInForm = () => {
-  const { signInUser } = useAuth();
+  const { signInUser, errorMsg, user, loading } = useAuth();
+  // const { signInUser, error, user, loading } = useContext();
+
   const navigate = useNavigate();
 
   const {
@@ -26,9 +31,18 @@ const SignInForm = () => {
     resolver: yupResolver(signInSchema),
   });
 
+  useEffect(() => {
+    if (user.id) {
+      navigate("/home");
+    }
+  }, [user.id]);
+
+  useEffect(() => {
+    errorMsg ? toast.error(errorMsg) : "";
+  }, [errorMsg]);
+
   const onSubmit = (formData: ISignInForm) => {
     signInUser(formData);
-    navigate("/home");
   };
 
   return (
@@ -54,17 +68,6 @@ const SignInForm = () => {
               </InputGroupAddon>
             </InputGroup>
             <p className="text-red-600 text-[12px]">{errors.email?.message}</p>
-            {/* <Input
-              value={emailPassword.email}
-              onChange={(e) =>
-                setEmailPassword((prev) => ({
-                  ...prev,
-                  email: e.target.value,
-                }))
-              }
-              className="mt-3 bg-[rgb(246,247,248)]"
-              type="email"
-            /> */}
           </div>
           <div>
             <Label>Password</Label>
@@ -81,20 +84,10 @@ const SignInForm = () => {
             <p className="text-red-600 text-[12px]">
               {errors.password?.message}
             </p>
-            {/* <Input
-              className="mt-3 bg-[rgb(246,247,248)]"
-              type="password"
-              value={emailPassword.password}
-              onChange={(e) =>
-                setEmailPassword((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
-              }
-            /> */}
           </div>
         </div>
-        <Button type="submit" className="w-full mt-10">
+        <Button type="submit" disabled={loading} className="w-full mt-10">
+          {loading && <Spinner />}
           Sign In
         </Button>
       </form>

@@ -14,6 +14,10 @@ export interface ISignUpApiBody {
   confirm_password?: string;
 }
 
+export function getAccessTokenApi(body: { refresh_token: string }) {
+  return publicAxios.post("/auth/v1/token?grant_type=refresh_token", body);
+}
+
 export function signInApi(body: IBody) {
   return publicAxios.post("/auth/v1/token?grant_type=password", body);
 }

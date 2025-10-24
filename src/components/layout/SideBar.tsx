@@ -1,5 +1,3 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -11,60 +9,55 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import logo from "../../assets/logo.png";
-
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+import { Button } from "../ui/button";
+import { useTodoGroupContext } from "@/context/TodoGroupContext";
+import { useEffect, useState } from "react";
+import CreateGroupModal from "../modals/CreateGroupModal";
+import { useAuth } from "@/context/AuthContext";
 
 export function AppSidebar() {
+  const [openModal, setOpenModal] = useState(false);
+
+  const { getTodoGroups, data } = useTodoGroupContext();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user.id) {
+      getTodoGroups();
+    }
+  }, [user.id]);
+
   return (
-    <Sidebar className="p-4 bg-[rgb(246,247,248)]">
-      <SidebarContent>
-        <SidebarHeader>
-          <img className="w-40" src={logo} alt="logo" />
-        </SidebarHeader>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <>
+      <Sidebar className={`p-4 bg-[rgb(246,247,248)]`}>
+        <SidebarContent>
+          <SidebarHeader>
+            <img className="w-40" src={logo} alt="logo" />
+          </SidebarHeader>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {data.map((item, index) => (
+                  <SidebarMenuItem key={index}>
+                    <SidebarMenuButton asChild>
+                      <a href={"#"}>
+                        {/* <item.icon /> */}
+                        <span>{item.name}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <Button onClick={() => setOpenModal((prev) => !prev)}>
+          Create Group
+        </Button>
+      </Sidebar>
+      {openModal && (
+        <CreateGroupModal modal={openModal} setModal={setOpenModal} />
+      )}
+    </>
   );
 }
