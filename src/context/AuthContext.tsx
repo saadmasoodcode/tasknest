@@ -1,27 +1,36 @@
 import {
   getAccessTokenApi,
   signInApi,
+  signOutApi,
   signUpApi,
   type IBody,
   type ISignUpApiBody,
 } from "@/apis/auth";
 import { setTokens } from "@/utils/axios";
 import { isAxiosError } from "axios";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 interface AuthContextType {
   signInUser: (body: IBody) => Promise<void>;
   signUpUser: (body: ISignUpApiBody) => Promise<void>;
   getAccessToken: (body: { refresh_token: string }) => Promise<void>;
+  signOutUser: () => void;
   user: {
     id: string;
     email: string;
     user_metadata: {
       full_name: string;
     };
-  };
+  } | null;
   errorMsg: string;
-  loading: boolean;
+  authenticating: boolean;
+  initializing: boolean;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -38,7 +47,7 @@ interface UserInterface {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserInterface>({
+  const [user, setUser] = useState<UserInterface | null>({
     id: "",
     email: "",
     user_metadata: {
@@ -46,10 +55,19 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
     },
   });
   const [errorMsg, setErrorMsg] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [initializing, setInitializing] = useState<boolean>(true);
+  const [authenticating, setAuthenticating] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (user?.id) {
+      setInitializing(false);
+    } else {
+      setInitializing(false);
+    }
+  }, [user?.id]);
 
   const signInUser = async (body: IBody) => {
-    setLoading(true);
+    setAuthenticating(true);
     setErrorMsg("");
     try {
       const response = await signInApi(body);
@@ -61,7 +79,7 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
         setErrorMsg(error.response?.data.msg);
       }
     } finally {
-      setLoading(false);
+      setAuthenticating(false);
     }
   };
 
@@ -75,7 +93,7 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
   };
 
   const getAccessToken = async (body: { refresh_token: string }) => {
-    setLoading(true);
+    setAuthenticating(true);
     setErrorMsg("");
     try {
       const response = await getAccessTokenApi(body);
@@ -87,7 +105,24 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
         setErrorMsg(error.response?.data.msg);
       }
     } finally {
-      setLoading(false);
+      setAuthenticating(false);
+    }
+  };
+
+  const signOutUser = async () => {
+    setAuthenticating(true);
+    setErrorMsg("");
+    try {
+      const response = await signOutApi();
+      setUser(null);
+      setTokens("", "");
+      console.log(response);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        setErrorMsg(error.response?.data.msg);
+      }
+    } finally {
+      setAuthenticating(false);
     }
   };
 
@@ -98,8 +133,10 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
         signUpUser,
         user,
         errorMsg,
-        loading,
+        authenticating,
+        initializing,
         getAccessToken,
+        signOutUser,
       }}
     >
       {children}

@@ -11,22 +11,28 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useTodoGroupContext } from "@/context/TodoGroupContext";
 import { useAuth } from "@/context/AuthContext";
+import { useTodoContext } from "@/context/TodosContext";
 
 interface PropsInterface {
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  group_id?: string;
 }
 
-const CreateGroupModal = (props: PropsInterface) => {
-  const { modal, setModal } = props;
+const CreateTodoModal = (props: PropsInterface) => {
+  const { modal, setModal, group_id } = props;
   const { user } = useAuth();
-  const { createTodoGroup } = useTodoGroupContext();
-  const [name, setName] = useState("");
+  const { createTodo } = useTodoContext();
+  const [title, setTitle] = useState("");
 
   const onFormSubmit = () => {
-    createTodoGroup({ name: name, user_id: user?.id || null });
+    createTodo({
+      title: title,
+      user_id: user?.id || null,
+      group_id: group_id,
+      is_completed: false,
+    });
     setModal(false);
   };
 
@@ -37,17 +43,17 @@ const CreateGroupModal = (props: PropsInterface) => {
         </DialogTrigger> */}
       <DialogContent showCloseButton={false} className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create new group</DialogTitle>
+          <DialogTitle>Create new Todo</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Organize your tasks into groups</DialogDescription>
+        <DialogDescription>Organize your tasks</DialogDescription>
         <div className="grid gap-4">
           <div className="grid gap-3">
-            <Label htmlFor="name-1">Name</Label>
+            <Label htmlFor="name-1">Title</Label>
             <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               id="name-1"
-              name="name"
+              name="title"
             />
           </div>
         </div>
@@ -64,4 +70,4 @@ const CreateGroupModal = (props: PropsInterface) => {
   );
 };
 
-export default CreateGroupModal;
+export default CreateTodoModal;

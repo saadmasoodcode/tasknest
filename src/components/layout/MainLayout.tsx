@@ -11,8 +11,10 @@ const MainLayout = () => {
       <main className="bg-[rgb(246,247,248)] w-screen">
         <Navbar />
         <div
-          className={`bg-[rgb(246,247,248)] h-[calc(100%-4.7919rem)] ${
-            useIsMobile() ? "w-full" : "w-[calc(100vw-18.50rem)]"
+          className={`bg-[rgb(246,247,248)] h-[calc(100%-4.7919rem)] overflow-y-scroll${
+            useIsMobile()
+              ? "w-full px-10 py-10"
+              : "w-[calc(100vw-16.00rem)] px-10 py-8"
           }`}
         >
           <Outlet />

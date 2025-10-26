@@ -8,8 +8,6 @@ function App() {
 
   useEffect(() => {
     const refresh_token = localStorage.getItem("refreshToken");
-    console.log("refreshToken: ", refresh_token);
-
     if (refresh_token) {
       getAccessToken({ refresh_token });
     }

@@ -18,8 +18,8 @@ interface ISignInForm {
 }
 
 const SignInForm = () => {
-  const { signInUser, errorMsg, user, loading } = useAuth();
-  // const { signInUser, error, user, loading } = useContext();
+  const { signInUser, errorMsg, user, authenticating } = useAuth();
+  // const { signInUser, error, user, authenticating } = useContext();
 
   const navigate = useNavigate();
 
@@ -32,10 +32,10 @@ const SignInForm = () => {
   });
 
   useEffect(() => {
-    if (user.id) {
+    if (user?.id) {
       navigate("/home");
     }
-  }, [user.id]);
+  }, [user?.id]);
 
   useEffect(() => {
     errorMsg ? toast.error(errorMsg) : "";
@@ -86,8 +86,12 @@ const SignInForm = () => {
             </p>
           </div>
         </div>
-        <Button type="submit" disabled={loading} className="w-full mt-10">
-          {loading && <Spinner />}
+        <Button
+          type="submit"
+          disabled={authenticating}
+          className="w-full mt-10"
+        >
+          {authenticating && <Spinner />}
           Sign In
         </Button>
       </form>

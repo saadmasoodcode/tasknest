@@ -19,7 +19,9 @@ interface ChildrenInterface {
 }
 
 interface TodoGroupsInterface {
+  id?: string;
   name: string;
+  user_id: string | null;
 }
 
 const TodoGroupContext = createContext<TodoGroupContextInterface | null>(null);
@@ -49,7 +51,7 @@ export const TodoGroupContextProvidor = ({ children }: ChildrenInterface) => {
     setErrorMsg("");
     try {
       const response = await createTodoGroupApi(body);
-      setData((prev) => [...prev, { name: body.name }]);
+      setData((prev) => [...prev, { name: body.name, user_id: body.user_id }]);
       console.log(response);
     } catch (error) {
       if (isAxiosError(error)) {

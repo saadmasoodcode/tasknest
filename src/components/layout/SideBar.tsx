@@ -14,18 +14,18 @@ import { useTodoGroupContext } from "@/context/TodoGroupContext";
 import { useEffect, useState } from "react";
 import CreateGroupModal from "../modals/CreateGroupModal";
 import { useAuth } from "@/context/AuthContext";
+import { NavLink } from "react-router-dom";
 
 export function AppSidebar() {
   const [openModal, setOpenModal] = useState(false);
-
   const { getTodoGroups, data } = useTodoGroupContext();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user.id) {
+    if (user?.id) {
       getTodoGroups();
     }
-  }, [user.id]);
+  }, [user?.id]);
 
   return (
     <>
@@ -40,10 +40,10 @@ export function AppSidebar() {
                 {data.map((item, index) => (
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
-                      <a href={"#"}>
+                      <NavLink to={`/group/${item.id}`}>
                         {/* <item.icon /> */}
                         <span>{item.name}</span>
-                      </a>
+                      </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -51,7 +51,7 @@ export function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <Button onClick={() => setOpenModal((prev) => !prev)}>
+        <Button className="mt-3" onClick={() => setOpenModal(true)}>
           Create Group
         </Button>
       </Sidebar>

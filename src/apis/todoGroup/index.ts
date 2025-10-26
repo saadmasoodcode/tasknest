@@ -2,7 +2,7 @@ import { privateAxios } from "@/utils/axios";
 
 export interface CreateTodoGroupApiBodyInterface {
   name: string;
-  user_id: string;
+  user_id: string | null;
 }
 
 export function getAllTodoGroupsApi() {

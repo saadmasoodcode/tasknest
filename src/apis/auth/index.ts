@@ -1,4 +1,4 @@
-import { publicAxios } from "@/utils/axios";
+import { privateAxios, publicAxios } from "@/utils/axios";
 
 export interface IBody {
   email: string;
@@ -24,4 +24,8 @@ export function signInApi(body: IBody) {
 
 export function signUpApi(body: ISignUpApiBody) {
   return publicAxios.post("/auth/v1/signup", body);
+}
+
+export function signOutApi() {
+  return privateAxios.post("/auth/v1/logout");
 }
