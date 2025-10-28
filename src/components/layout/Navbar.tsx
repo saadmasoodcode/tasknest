@@ -10,7 +10,6 @@ import {
 } from "../ui/dropdown-menu";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/pages/Loading";
-import { useTodoContext } from "@/context/TodosContext";
 import { useTodoGroupContext } from "@/context/TodoGroupContext";
 import { useEffect } from "react";
 
