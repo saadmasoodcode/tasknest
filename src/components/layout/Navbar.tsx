@@ -8,18 +8,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "@/pages/Loading";
+import { useTodoContext } from "@/context/TodosContext";
+import { useTodoGroupContext } from "@/context/TodoGroupContext";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const { user, signOutUser } = useAuth();
+  const { getTodoGroup, todoGroup } = useTodoGroupContext();
+  const params = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params.id) {
+      getTodoGroup(params.id);
+    }
+  }, [params.id]);
 
   return (
     <div className="flex justify-between items-center border-b border-b-neutral-200 px-5 py-3 sticky top-0 bg-[rgb(246,247,248)]">
       <div className="flex gap-2 items-center">
         {useIsMobile() ? <SidebarTrigger /> : ""}
-        <h1>Home</h1>
+        <h1>{todoGroup[0] ? todoGroup[0].name : "Home"}</h1>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>

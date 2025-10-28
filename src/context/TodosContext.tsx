@@ -23,13 +23,13 @@ interface TodoContextTypes {
   editTodo: (body: createTodoApiBodyInterface, id: string) => Promise<void>;
   loading: boolean;
   errorMsg: string;
-  todos: TodosInterface[];
+  todos: TodosInterface[] | null;
 }
 
 const TodoContext = createContext<TodoContextTypes | null>(null);
 
 export const TodoContextProvider = ({ children }: TodoContextPropsTypes) => {
-  const [todos, setTodos] = useState<TodosInterface[]>([]);
+  const [todos, setTodos] = useState<TodosInterface[] | null>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
 
@@ -39,7 +39,6 @@ export const TodoContextProvider = ({ children }: TodoContextPropsTypes) => {
     try {
       const response = await getTodosApi(group_id);
       setTodos(response.data);
-      console.log(response);
     } catch (error) {
       if (isAxiosError(error)) {
         setErrorMsg(error.response?.data.msg);

@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import logo from "../../assets/logo.png";
 import { Button } from "../ui/button";
@@ -27,6 +28,8 @@ export function AppSidebar() {
     }
   }, [user?.id]);
 
+  const { setOpenMobile } = useSidebar();
+
   return (
     <>
       <Sidebar className={`p-4 bg-[rgb(246,247,248)]`}>
@@ -39,10 +42,16 @@ export function AppSidebar() {
               <SidebarMenu>
                 {data.map((item, index) => (
                   <SidebarMenuItem key={index}>
-                    <SidebarMenuButton asChild>
-                      <NavLink to={`/group/${item.id}`}>
+                    <SidebarMenuButton
+                      className="bg-[rgb(94,138,226)] hover:bg-[rgb(94,139,226)]/90 active:bg-[rgb(94,139,226)]/70"
+                      asChild
+                    >
+                      <NavLink
+                        to={`/group/${item.id}`}
+                        onClick={() => setOpenMobile(false)}
+                      >
                         {/* <item.icon /> */}
-                        <span>{item.name}</span>
+                        <span className="text-white">{item.name}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

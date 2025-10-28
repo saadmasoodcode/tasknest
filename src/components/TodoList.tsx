@@ -25,10 +25,11 @@ const TodoList = () => {
         </div>
         <div className="mt-10">
           <ul className="flex gap-3 flex-col w-full">
-            {todos.map((item) => {
+            {todos?.map((item) => {
               return (
                 <Todos
                   id={item.id}
+                  key={item.id}
                   group_id={params.id}
                   title={item.title}
                   is_completed={item.is_completed}

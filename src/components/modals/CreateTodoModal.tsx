@@ -13,6 +13,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useAuth } from "@/context/AuthContext";
 import { useTodoContext } from "@/context/TodosContext";
+import { Spinner } from "../ui/spinner";
 
 interface PropsInterface {
   modal: boolean;
@@ -23,17 +24,19 @@ interface PropsInterface {
 const CreateTodoModal = (props: PropsInterface) => {
   const { modal, setModal, group_id } = props;
   const { user } = useAuth();
-  const { createTodo } = useTodoContext();
+  const { createTodo, loading } = useTodoContext();
   const [title, setTitle] = useState("");
 
-  const onFormSubmit = () => {
-    createTodo({
+  const onFormSubmit = async () => {
+    await createTodo({
       title: title,
       user_id: user?.id || null,
       group_id: group_id,
       is_completed: false,
     });
-    setModal(false);
+    if (!loading) {
+      setModal(false);
+    }
   };
 
   return (
@@ -63,7 +66,9 @@ const CreateTodoModal = (props: PropsInterface) => {
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={onFormSubmit}>Create</Button>
+          <Button onClick={onFormSubmit} disabled={loading}>
+            {loading && <Spinner />}Create
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

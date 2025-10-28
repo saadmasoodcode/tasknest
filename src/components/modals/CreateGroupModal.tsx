@@ -13,6 +13,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useTodoGroupContext } from "@/context/TodoGroupContext";
 import { useAuth } from "@/context/AuthContext";
+import { Spinner } from "../ui/spinner";
 
 interface PropsInterface {
   modal: boolean;
@@ -22,12 +23,14 @@ interface PropsInterface {
 const CreateGroupModal = (props: PropsInterface) => {
   const { modal, setModal } = props;
   const { user } = useAuth();
-  const { createTodoGroup } = useTodoGroupContext();
+  const { createTodoGroup, loading } = useTodoGroupContext();
   const [name, setName] = useState("");
 
-  const onFormSubmit = () => {
-    createTodoGroup({ name: name, user_id: user?.id || null });
-    setModal(false);
+  const onFormSubmit = async () => {
+    await createTodoGroup({ name: name, user_id: user?.id || null });
+    if (!loading) {
+      setModal(false);
+    }
   };
 
   return (
@@ -57,7 +60,9 @@ const CreateGroupModal = (props: PropsInterface) => {
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={onFormSubmit}>Create</Button>
+          <Button disabled={loading} onClick={onFormSubmit}>
+            {loading && <Spinner />}Create
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
