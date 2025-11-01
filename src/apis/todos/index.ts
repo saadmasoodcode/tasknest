@@ -9,11 +9,17 @@ export interface createTodoApiBodyInterface {
 }
 
 export function getTodosApi(group_id?: string | null) {
-  return privateAxios.get(`/rest/v1/todos?group_id=eq.${group_id}`);
+  return privateAxios.get(
+    `/rest/v1/todos?group_id=eq.${group_id}&order=created_at.asc`
+  );
 }
 
 export function createTodoApi(body: createTodoApiBodyInterface) {
   return privateAxios.post("/rest/v1/todos", body);
+}
+
+export function deleteTodoApi(id: string) {
+  return privateAxios.delete(`/rest/v1/todos?id=eq.${id}`);
 }
 
 export function editTodoApi(body: createTodoApiBodyInterface, id?: string) {

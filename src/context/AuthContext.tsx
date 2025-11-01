@@ -62,7 +62,9 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
     if (user?.id) {
       setInitializing(false);
     } else {
-      setInitializing(false);
+      setTimeout(() => {
+        setInitializing(false);
+      }, 1000);
     }
   }, [user?.id]);
 

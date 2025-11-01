@@ -1,5 +1,6 @@
 import {
   createTodoApi,
+  deleteTodoApi,
   editTodoApi,
   getTodosApi,
   type createTodoApiBodyInterface,
@@ -12,7 +13,8 @@ interface TodoContextPropsTypes {
 }
 
 interface TodosInterface {
-  id?: string;
+  id: string;
+  group_id: string;
   title: string;
   is_completed: boolean;
 }
@@ -21,6 +23,7 @@ interface TodoContextTypes {
   getTodos: (group_id: string) => Promise<void>;
   createTodo: (body: createTodoApiBodyInterface) => Promise<void>;
   editTodo: (body: createTodoApiBodyInterface, id: string) => Promise<void>;
+  deleteTodo: (id: string, group_id: string) => Promise<void>;
   loading: boolean;
   errorMsg: string;
   todos: TodosInterface[] | null;
@@ -64,6 +67,21 @@ export const TodoContextProvider = ({ children }: TodoContextPropsTypes) => {
     }
   };
 
+  const deleteTodo = async (id: string, group_id: string) => {
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      await deleteTodoApi(id);
+      await getTodos(group_id);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        setErrorMsg(error.response?.data.msg);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const editTodo = async (
     body: createTodoApiBodyInterface,
     id: string | undefined
@@ -71,8 +89,7 @@ export const TodoContextProvider = ({ children }: TodoContextPropsTypes) => {
     setLoading(true);
     setErrorMsg("");
     try {
-      const response = await editTodoApi(body, id);
-      console.log(response);
+      await editTodoApi(body, id);
       getTodos(body.group_id);
     } catch (error) {
       if (isAxiosError(error)) {
@@ -85,7 +102,15 @@ export const TodoContextProvider = ({ children }: TodoContextPropsTypes) => {
 
   return (
     <TodoContext.Provider
-      value={{ getTodos, createTodo, loading, errorMsg, todos, editTodo }}
+      value={{
+        getTodos,
+        createTodo,
+        loading,
+        errorMsg,
+        todos,
+        editTodo,
+        deleteTodo,
+      }}
     >
       {children}
     </TodoContext.Provider>

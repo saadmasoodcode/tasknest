@@ -6,7 +6,7 @@ export interface CreateTodoGroupApiBodyInterface {
 }
 
 export function getAllTodoGroupsApi() {
-  return privateAxios.get("/rest/v1/todo_groups");
+  return privateAxios.get("/rest/v1/todo_groups?order=created_at.asc");
 }
 
 export function getTodoGroupApi(id: string) {
@@ -19,4 +19,11 @@ export function createTodoGroupApi(body: CreateTodoGroupApiBodyInterface) {
 
 export function deleteTodoGroupApi(id: string) {
   return privateAxios.delete(`/rest/v1/todo_groups?id=eq.${id}`);
+}
+
+export function editTodoGroupApi(
+  body: CreateTodoGroupApiBodyInterface,
+  id: string
+) {
+  return privateAxios.patch(`/rest/v1/todo_groups?id=eq.${id}`, body);
 }

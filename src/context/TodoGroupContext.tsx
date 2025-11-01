@@ -1,5 +1,7 @@
 import {
   createTodoGroupApi,
+  deleteTodoGroupApi,
+  editTodoGroupApi,
   getAllTodoGroupsApi,
   getTodoGroupApi,
   type CreateTodoGroupApiBodyInterface,
@@ -11,6 +13,11 @@ interface TodoGroupContextInterface {
   getTodoGroups: () => Promise<void>;
   getTodoGroup: (id: string) => Promise<void>;
   createTodoGroup: (body: CreateTodoGroupApiBodyInterface) => Promise<void>;
+  deleteTodoGroup: (id: string) => Promise<void>;
+  editTodoGroup: (
+    body: CreateTodoGroupApiBodyInterface,
+    id: string
+  ) => Promise<void>;
   todoGroup: SingleTodoGroupInterface[];
   loading: boolean;
   errorMsg: string;
@@ -95,6 +102,39 @@ export const TodoGroupContextProvidor = ({ children }: ChildrenInterface) => {
     }
   };
 
+  const deleteTodoGroup = async (id: string) => {
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      await deleteTodoGroupApi(id);
+      await getTodoGroups();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        setErrorMsg(error.response?.data.msg);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editTodoGroup = async (
+    body: CreateTodoGroupApiBodyInterface,
+    id: string
+  ) => {
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      await editTodoGroupApi(body, id);
+      await getTodoGroups();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        setErrorMsg(error.response?.data.msg);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TodoGroupContext.Provider
       value={{
@@ -105,6 +145,8 @@ export const TodoGroupContextProvidor = ({ children }: ChildrenInterface) => {
         data,
         getTodoGroup,
         todoGroup,
+        deleteTodoGroup,
+        editTodoGroup,
       }}
     >
       {children}

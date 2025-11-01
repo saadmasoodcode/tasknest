@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -18,16 +18,22 @@ import { Spinner } from "../ui/spinner";
 interface PropsInterface {
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string;
 }
 
-const CreateGroupModal = (props: PropsInterface) => {
-  const { modal, setModal } = props;
+const EditGroupModal = (props: PropsInterface) => {
+  const { modal, setModal, id } = props;
   const { user } = useAuth();
-  const { createTodoGroup, loading } = useTodoGroupContext();
+  const { loading, editTodoGroup, todoGroup } = useTodoGroupContext();
   const [name, setName] = useState("");
 
+  useEffect(() => {
+    console.log(id);
+    !loading && setName(todoGroup[0].name);
+  }, []);
+
   const onFormSubmit = async () => {
-    await createTodoGroup({ name: name, user_id: user?.id || null });
+    await editTodoGroup({ name: name, user_id: user?.id || null }, id);
     if (!loading) {
       setModal(false);
     }
@@ -35,12 +41,9 @@ const CreateGroupModal = (props: PropsInterface) => {
 
   return (
     <Dialog open={modal} onOpenChange={setModal}>
-      {/* <DialogTrigger asChild>
-          <Button variant="outline">Open Dialog</Button>
-        </DialogTrigger> */}
       <DialogContent showCloseButton={false} className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create new group</DialogTitle>
+          <DialogTitle>Edit group</DialogTitle>
         </DialogHeader>
         <DialogDescription>Organize your tasks into groups</DialogDescription>
         <div className="grid gap-4">
@@ -61,7 +64,7 @@ const CreateGroupModal = (props: PropsInterface) => {
             </Button>
           </DialogClose>
           <Button disabled={loading} type="button" onClick={onFormSubmit}>
-            {loading && <Spinner />}Create
+            {loading && <Spinner />}Edit
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -69,4 +72,4 @@ const CreateGroupModal = (props: PropsInterface) => {
   );
 };
 
-export default CreateGroupModal;
+export default EditGroupModal;
