@@ -29,3 +29,10 @@ export function signUpApi(body: ISignUpApiBody) {
 export function signOutApi() {
   return privateAxios.post("/auth/v1/logout");
 }
+
+export function guestSignInApi() {
+  return publicAxios.post("/auth/v1/token?grant_type=password", {
+    email: "user@guest.com",
+    password: "123456",
+  });
+}

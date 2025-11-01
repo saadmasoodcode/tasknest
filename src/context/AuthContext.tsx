@@ -1,5 +1,6 @@
 import {
   getAccessTokenApi,
+  guestSignInApi,
   signInApi,
   signOutApi,
   signUpApi,
@@ -18,6 +19,7 @@ import {
 
 interface AuthContextType {
   signInUser: (body: IBody) => Promise<void>;
+  signInGuest: () => Promise<void>;
   signUpUser: (body: ISignUpApiBody) => Promise<void>;
   getAccessToken: (body: { refresh_token: string }) => Promise<void>;
   signOutUser: () => void;
@@ -29,11 +31,17 @@ interface AuthContextType {
     };
   } | null;
   errorMsg: string;
-  authenticating: boolean;
+  authenticating: IAuthenticating;
   initializing: boolean;
 }
 interface AuthProviderProps {
   children: ReactNode;
+}
+
+interface IAuthenticating {
+  sign_in: boolean;
+  guest_sign_in: boolean;
+  general: boolean;
 }
 
 interface UserInterface {
@@ -56,7 +64,11 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
   });
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [initializing, setInitializing] = useState<boolean>(true);
-  const [authenticating, setAuthenticating] = useState<boolean>(false);
+  const [authenticating, setAuthenticating] = useState<IAuthenticating>({
+    sign_in: false,
+    guest_sign_in: false,
+    general: false,
+  });
 
   useEffect(() => {
     if (user?.id) {
@@ -69,62 +81,76 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
   }, [user?.id]);
 
   const signInUser = async (body: IBody) => {
-    setAuthenticating(true);
+    setAuthenticating((prev) => ({ ...prev, sign_in: true }));
     setErrorMsg("");
     try {
       const response = await signInApi(body);
       setUser(response.data.user);
       setTokens(response.data.access_token, response.data.refresh_token);
-      console.log(response);
     } catch (error) {
       if (isAxiosError(error)) {
         setErrorMsg(error.response?.data.msg);
       }
     } finally {
-      setAuthenticating(false);
+      setAuthenticating((prev) => ({ ...prev, sign_in: false }));
     }
   };
 
   const signUpUser = async (body: ISignUpApiBody) => {
     try {
-      const response = await signUpApi(body);
-      return console.log(response);
+      await signUpApi(body);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getAccessToken = async (body: { refresh_token: string }) => {
-    setAuthenticating(true);
+    setAuthenticating((prev) => ({ ...prev, general: true }));
+
     setErrorMsg("");
     try {
       const response = await getAccessTokenApi(body);
       setTokens(response.data.access_token, response.data.refresh_token);
       setUser(response.data.user);
-      console.log(response);
     } catch (error) {
       if (isAxiosError(error)) {
         setErrorMsg(error.response?.data.msg);
       }
     } finally {
-      setAuthenticating(false);
+      setAuthenticating((prev) => ({ ...prev, general: false }));
     }
   };
 
   const signOutUser = async () => {
-    setAuthenticating(true);
+    setAuthenticating((prev) => ({ ...prev, general: true }));
+
     setErrorMsg("");
     try {
-      const response = await signOutApi();
+      await signOutApi();
       setUser(null);
       setTokens("", "");
-      console.log(response);
     } catch (error) {
       if (isAxiosError(error)) {
         setErrorMsg(error.response?.data.msg);
       }
     } finally {
-      setAuthenticating(false);
+      setAuthenticating((prev) => ({ ...prev, general: false }));
+    }
+  };
+
+  const signInGuest = async () => {
+    setAuthenticating((prev) => ({ ...prev, guest_sign_in: true }));
+    setErrorMsg("");
+    try {
+      const response = await guestSignInApi();
+      setUser(response.data.user);
+      setTokens(response.data.access_token, response.data.refresh_token);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        setErrorMsg(error.response?.data.msg);
+      }
+    } finally {
+      setAuthenticating((prev) => ({ ...prev, guest_sign_in: false }));
     }
   };
 
@@ -139,6 +165,7 @@ export const AuthContextProvidor = ({ children }: AuthProviderProps) => {
         initializing,
         getAccessToken,
         signOutUser,
+        signInGuest,
       }}
     >
       {children}

@@ -85,6 +85,7 @@ export function AppSidebar() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="right" align="start">
                         <DropdownMenuItem
+                          variant="destructive"
                           onClick={() => {
                             handleDeleteClick(item.id ? item.id : "");
                           }}

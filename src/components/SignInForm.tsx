@@ -11,6 +11,7 @@ import { signInSchema } from "@/yupSchemas/AuthSchemas";
 import { toast } from "sonner";
 import { Spinner } from "./ui/spinner";
 import { useEffect } from "react";
+import { Separator } from "./ui/separator";
 
 interface ISignInForm {
   email: string;
@@ -18,8 +19,7 @@ interface ISignInForm {
 }
 
 const SignInForm = () => {
-  const { signInUser, errorMsg, user, authenticating } = useAuth();
-  // const { signInUser, error, user, authenticating } = useContext();
+  const { signInUser, errorMsg, user, authenticating, signInGuest } = useAuth();
 
   const navigate = useNavigate();
 
@@ -88,11 +88,22 @@ const SignInForm = () => {
         </div>
         <Button
           type="submit"
-          disabled={authenticating}
+          disabled={authenticating.sign_in}
           className="w-full mt-10"
         >
-          {authenticating && <Spinner />}
+          {authenticating.sign_in && <Spinner />}
           Sign In
+        </Button>
+        <Separator className="mt-5" />
+        <Button
+          type="submit"
+          variant={"ghost"}
+          disabled={authenticating.guest_sign_in}
+          className="w-full mt-5 border"
+          onClick={signInGuest}
+        >
+          {authenticating.guest_sign_in && <Spinner />}
+          Guest
         </Button>
       </form>
       <div className="w-full flex justify-center">

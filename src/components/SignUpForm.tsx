@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "@/yupSchemas/AuthSchemas";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { Spinner } from "./ui/spinner";
 
 interface SignUpFormInputs {
   full_name: string;
@@ -16,7 +17,7 @@ interface SignUpFormInputs {
 }
 
 const SignUpForm = () => {
-  const { signUpUser } = useAuth();
+  const { signUpUser, authenticating } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -100,11 +101,12 @@ const SignUpForm = () => {
             </p>
           </div>
           <Button type="submit" className="w-full">
+            {authenticating.general && <Spinner />}
             Sign Up
           </Button>
           <div className="w-full flex justify-center">
             <p className="mt-2 text-[12px] text-[#696868]">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Link className="text-blue-500 text-[13px]" to={"/"}>
                 SignIn
               </Link>
