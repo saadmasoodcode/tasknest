@@ -23,10 +23,15 @@ const Todos = (props: PropsInterface) => {
   const [completed, setCompleted] = useState<boolean>(is_completed);
 
   useEffect(() => {
-    editTodo(
-      { id: id, group_id: group_id, title: title, is_completed: completed },
-      id
-    );
+    if (
+      (is_completed === true || is_completed === false) &&
+      is_completed !== completed
+    ) {
+      editTodo(
+        { id: id, group_id: group_id, title: title, is_completed: completed },
+        id
+      );
+    }
   }, [completed]);
 
   return (
