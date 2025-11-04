@@ -1,73 +1,33 @@
-# React + TypeScript + Vite
+# 🚀 TaskNest - Modern Todo Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TaskNest is a sophisticated, full-stack todo application built with React 19, TypeScript, and modern web technologies. It features a complete authentication system, intuitive task organization, and a beautiful responsive interface.
 
-Currently, two official plugins are available:
+## ✨ Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **🔐 Secure Authentication** - User registration/login with guest mode
+- **📂 Smart Group Organization** - Categorize tasks into customizable groups
+- **✅ Real-time Task Management** - Create, edit, complete, and delete todos
+- **📱 Fully Responsive** - Optimized for desktop and mobile devices
+- **🎨 Modern UI/UX** - Built with Tailwind CSS and shadcn/ui components
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Frontend:** React 19, TypeScript, Tailwind CSS  
+**UI Components:** shadcn/ui, Radix UI, Lucide React  
+**State Management:** React Context API  
+**Forms & Validation:** React Hook Form, Yup  
+**Routing:** React Router DOM  
+**Build Tool:** Vite  
+**Backend:** Supabase (REST API + Auth API)
 
-## Expanding the ESLint configuration
+## 🏗️ Architecture Highlights
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Modular component structure with reusable UI components
+- Context-based state management for todos, groups, and authentication
+- Protected routes and secure API integration
+- Mobile-first responsive design with collapsible sidebar
+- Form validation with user-friendly error handling
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🎯 Project Impact
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Demonstrates expertise in modern React patterns, TypeScript implementation, and full-featured application development with a focus on user experience and code maintainability.
